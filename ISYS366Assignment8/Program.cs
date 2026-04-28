@@ -1,11 +1,14 @@
 using ISYS366Assignment3.Data;
 using ISYS366Assignment3.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddDbContext<ISYS366Assignment3Context>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ISYS366Assignment3Context") ?? throw new InvalidOperationException("Connection string 'ISYS366Assignment3Context' not found.")));
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<MovieRepoEf>();
 
@@ -61,5 +64,3 @@ app.MapDelete("/api/movies/{id:int}", async ([FromServices] MovieRepoEf repo, in
 });
 
 app.Run();
-
-
